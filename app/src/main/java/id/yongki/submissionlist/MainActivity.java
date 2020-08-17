@@ -1,24 +1,27 @@
 package id.yongki.submissionlist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class MainActivity extends AppCompatActivity implements ListFilmAdapter.OnItemListener {
+public class MainActivity extends AppCompatActivity implements ListFoodAdapter.OnItemListener {
     public static final String NAMA = "id.yongki.subMission.NAMA";
     public static final String DETAIL = "id.yongki.subMission.DETAIL";
     public static final String IMG = "id.yongki.subMission.IMG";
+    public static final String ID = "id.yongki.subMission.ID";
     private RecyclerView recyclerView;
-    ArrayList<FilmModel> list = new ArrayList<>();
+    ArrayList<FoodModel> list = new ArrayList<>();
 
 
     @Override
@@ -26,28 +29,42 @@ public class MainActivity extends AppCompatActivity implements ListFilmAdapter.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        recyclerView = findViewById(R.id.rv_film);
+        recyclerView = findViewById(R.id.rv_food);
         recyclerView.setHasFixedSize(true);
 
-
-        list.addAll(FilmData.getListData());
-
+        list.addAll(FoodData.getListData());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ListFilmAdapter listFilmAdapter = new ListFilmAdapter(getApplicationContext(),list, this );
-        recyclerView.setAdapter(listFilmAdapter);
+        ListFoodAdapter listFoodAdapter = new ListFoodAdapter(getApplicationContext(),list, this );
+        recyclerView.setAdapter(listFoodAdapter);
     }
 
     @Override
     public void onItemClick(int position) {
-        FilmModel id = new FilmModel();
-        String nama = id.getName();
-        String detail = id.getDetail();
-        int img = id.getPhoto();
+
+        FoodModel foodModel = list.get(position);
+        Toast.makeText(getApplicationContext(), foodModel.getName(),Toast.LENGTH_LONG).show();
+        String nama = foodModel.getName();
+        String detail = foodModel.getDetail();
+        String img = Integer.toString(foodModel.getPhoto()) ;
         Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
         intent.putExtra(NAMA, nama);
         intent.putExtra(DETAIL, detail);
         intent.putExtra(IMG, img);
         startActivity(intent);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_about) {
+            startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

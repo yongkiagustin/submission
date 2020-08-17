@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_film"
+        android:id="@+id/rv_food"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_film" />
+        tools:listitem="@layout/item_food" />
 </LinearLayout>
